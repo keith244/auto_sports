@@ -62,7 +62,8 @@
         <label for="Password">Password</label><br>
         <input type="password" id="Password" name="Password" placeholder="Enter your password" required><br>
         <button type="submit">Submit</button>
-        <p>Don't have an account? <a href="register.php">Sign up</a> now</p>
+        <p>Don't have an account? <a href="register.php">Sign up</a> now</p><br><br>
+        <p>Login as coach <a href="adminlogin.php">here</a> </p>
     </form>
 </body>
 </html>

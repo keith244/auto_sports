@@ -1,7 +1,12 @@
 <?php
+$host= "localhost";
+$dbname= "auto_sports";
+$username= "root";
+$password= "";
 
-    $con = mysqli_connect('localhost','root','','auto_sports');
-    if (mysqli_connect_error()){
-        echo "Failed to connect to MySql" . mysqli_connect_error();
-    }
+$mysqli = new mysqli ($host,$username,$password, $dbname);
+if ($mysqli -> connect_errno){
+    die ("Connection error: " . $mysqli -> connect_error);
+}
+return $mysqli;
 ?>

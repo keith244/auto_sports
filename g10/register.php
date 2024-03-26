@@ -1,23 +1,41 @@
 <?php
-    include 'conn.php';
-    if(isset($_POST['Submit'])){
-        $name= $_POST ['Fullname'];
-        $regNumber = $_POST['RegNumber'];
-        $email = $_POST['Email'];
-        $password= $_POST['Password'];
+session_start();
 
-        $sql= "INSERT INTO Players (FullName, RegNumber, Email, Password ) Values('$name','$regNumber','$email','$password')";
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Submit'])) {
+    // Include your database connection file
+    include_once "conn.php";
 
-        $result= mysqli_query($con, $sql);
-        if ($result==TRUE) {
-            echo "SUCCESS";
-            header( "Location: index.php" );
+    // Check if all required fields are provided
+    if (isset($_POST['Fullname']) && isset($_POST['RegNumber']) && isset($_POST['Email']) && isset($_POST['Password'])) {
+        // Escape user inputs for security
+        $name = $mysqli->real_escape_string($_POST['Fullname']);
+        $regNumber = $mysqli->real_escape_string($_POST['RegNumber']);
+        $email = $mysqli->real_escape_string($_POST['Email']);
+        $password = $mysqli->real_escape_string($_POST['Password']);
+
+        // SQL query to insert player details into the database
+        $sql = "INSERT INTO Players (FullName, RegNumber, Email, Password) VALUES ('$name', '$regNumber', '$email', '$password')";
+
+        // Execute the query
+        $result = $mysqli->query($sql);
+
+        if ($result) {
+            // Registration successful, redirect to index.php
+            $_SESSION["success_message"] = "Registration successful";
+            header("Location: index.php");
+            exit();
         } else {
-            echo  "Error:" . $sql . "<br>";
+            // Error inserting into database
+            echo "Error: " . $mysqli->error;
         }
-
+    } else {
+        // If any required field is missing, show error message
+        echo "Error: All fields are required.";
     }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +104,8 @@
         <label for="Password">Password</label><br>
         <input type="password" id="Password" name="Password" placeholder="Enter your password" required autocomplete="off"><br>
         <button type="submit" name="Submit">Sign Up</button>
-        <p>Already have an account? <a href="index.php">Log in</a></p>
+        <p>Already have an account? <a href="index.php">Log in</a></p><br><br>
+        <p>Login as coach <a href="adminlogin.php">here</a></p>
     </form>
 </body>
 </html>
